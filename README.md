@@ -1,6 +1,8 @@
 # FlowMate
 A convenient Hamiltonian based phase portrait visualiser.
 
+![Particular phase portrait made from FlowMate](/images/onion_plot.png)
+
 ## Usage
 
 Given some Hamiltonian $H$, we get through Hamiltons equations:
