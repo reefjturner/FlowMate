@@ -1,9 +1,8 @@
 '''
 # FlowMate
 
-Convenient phase portrait plotter
+A convenient Hamiltonian based phase portrait visualiser.
 '''
-
 import numpy as np
 import matplotlib.pyplot as plt
 
