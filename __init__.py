@@ -21,6 +21,8 @@ def get_vector_field(X: callable, PS: list, args=[]):
         (dot_q, dot_p) (array_like): The Hamiltonian vector field calculated at each point.
 
     Examples:
+    >>> import numpy as np
+    >>> import FlowMate
     >>> def X(q,p,m,k):
     >>>     return p/m, -k*q
     >>> # define the phase space
@@ -68,6 +70,8 @@ def plot_phase_portrait(X: callable, PS: list, args=[], vec_field=False, save_fi
         dark_mode (bool, default = ``True``): If ``True``, renders image with black background.
 
     Examples:
+    >>> import numpy as np
+    >>> import FlowMate
     >>> def X(q,p,m,k):
     >>>     return p/m, -k*q
     >>> # define the phase space
