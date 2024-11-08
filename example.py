@@ -1,7 +1,6 @@
 '''
 Onion
 '''
-
 import FlowMate
 import numpy as np
 
