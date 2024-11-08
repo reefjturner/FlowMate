@@ -16,7 +16,7 @@ $$X = \begin{bmatrix}
 \dot p
 \end{bmatrix}$$
 
-1. Define the Hamiltonian vector field as a callable function, with two arguments ``q``, ``p``, as well as optional additional arguments `*arg`.
+1. Define the Hamiltonian vector field as a callable function, with two arguments ``q``, ``p``, as well as optional additional arguments `*arg`, which returns $\dot q$, and $\dot p$.
 ```
 def X(q,p,k,m):
   return p/m, -k*q
