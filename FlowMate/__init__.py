@@ -6,19 +6,19 @@ A convenient Hamiltonian based phase portrait visualiser.
 import numpy as np
 import matplotlib.pyplot as plt
 
-def get_vector_field(X: callable, PS: list, args=[]):
+def get_vector_field(X: callable, phase_space: list, args=[]):
     '''
     Returns the Hamiltonian Vector field from Hamiltons equations.
 
     Parameters:
         X (callable): Hamiltons equations as a funciton of phase space.
 
-        PS (array_like): Numpy meshgrid of position and conjugate momenta coordinates.
+        phase_space (array_like): Numpy meshgrid of position and conjugate momenta coordinates.
 
         args (list, optional): The arguments to be put into ``X``.
 
     Returns:
-        (dot_q, dot_p) (array_like): The Hamiltonian vector field calculated at each point.
+        (position_derivatives, momentum_derivatives) (array_like): The Hamiltonian vector field calculated at each point.
 
     Examples:
     >>> import numpy as np
@@ -39,21 +39,21 @@ def get_vector_field(X: callable, PS: list, args=[]):
     >>> plt.quiver(q,p,dot_q/l, dot_p/l,l, cmap=cmap, pivot='mid', angles='xy')
     >>> plt.show()
     '''
-    (q, p) = PS
+    (position, momentum) = phase_space
     if args == []:
-        dot_q, dot_p = X(q, p)
+        position_derivatives, momentum_derivatives = X(position, momentum)
     else:
-        dot_q, dot_p = X(q, p, *args)
-    return dot_q * np.ones_like(q), dot_p * np.ones_like(p)
+        position_derivatives, momentum_derivatives = X(position, momentum, *args)
+    return position_derivatives * np.ones_like(position), momentum_derivatives * np.ones_like(momentum)
 
-def plot_phase_portrait(X: callable, PS: list, args=[], vec_field=False, save_fig=False, density=3.0, cmap='inferno_r', dpi=300.0, dark_mode=True):
+def plot_phase_portrait(X: callable, phase_space: list, args=[], vec_field=False, save_fig=False, density=3.0, cmap='inferno_r', dpi=300.0, dark_mode=True):
     '''
     Creates phase portrait plot from Hamiltons equations.
 
     Parameters:
         X (callable): Hamiltons equations as a function of phase space.
 
-        PS (array_like): Numpy meshgrid of position and conjugate momenta coordinates.
+        phase_space (array_like): Numpy meshgrid of position and conjugate momenta coordinates.
 
         args (list, optional): The arguments to be put into ``X``.
 
@@ -88,13 +88,12 @@ def plot_phase_portrait(X: callable, PS: list, args=[], vec_field=False, save_fi
         plt.rcParams['figure.facecolor'] = 'black'
     ax = plt.axes(aspect='equal')
     ax.set_axis_off()
-    (q, p) = PS
-    dot_q, dot_p = get_vector_field(X, PS, args=args)
-    l = np.sqrt(dot_q**2 + dot_p**2) # compute the magnitude of the Hamiltonian Vector Field at each point in phase space
-    
-    ax.streamplot(q,p, dot_q, dot_p, cmap=cmap, density=density, linewidth=0.2, arrowstyle='-', color=l, broken_streamlines=False)
+    (position, momentum) = phase_space
+    position_derivatives, momentum_derivatives = get_vector_field(X, phase_space, args=args)
+    magnitude = np.sqrt(position_derivatives**2 + momentum_derivatives**2)
+    ax.streamplot(position,momentum, position_derivatives, momentum_derivatives, cmap=cmap, density=density, linewidth=0.2, arrowstyle='-', color=magnitude, broken_streamlines=False)
     if vec_field:
-        ax.quiver(q,p,dot_q/l, dot_p/l,l, cmap=cmap, pivot='mid', angles='xy')
+        ax.quiver(position,momentum,position_derivatives/magnitude, momentum_derivatives/magnitude, magnitude, cmap=cmap, pivot='mid', angles='xy')
     if save_fig:
-        plt.savefig("phase_portrait.png", dpi=dpi) # high dpi to make the image quality nice
+        plt.savefig("phase_portrait.png", dpi=dpi)
     plt.show()
